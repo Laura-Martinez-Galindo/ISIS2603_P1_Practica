@@ -2,6 +2,7 @@ package co.edu.uniandes.dse.parcial1.services;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.parcial1.entities.ConciertoEntity;
@@ -14,10 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ConciertoService {
+    @Autowired
     private ConciertoRepository conciertoRepository;
     //Create
     @Transactional
-    public void createConcierto(ConciertoEntity concierto) throws IllegalOperationException{
+    public ConciertoEntity createConcierto(ConciertoEntity concierto) throws IllegalOperationException{
         log.info("Empieza proceso de crear un concierto");
         if (concierto.getFechaConcierto().isBefore(LocalDateTime.now())){
             throw new IllegalOperationException("La fecha de un concierto no puede ser en el pasado");
@@ -33,6 +35,7 @@ public class ConciertoService {
         
         conciertoRepository.save(concierto);
         log.info("Finaliza proceso de crear un concierto");
+        return concierto;
     }
 
     @Transactional
